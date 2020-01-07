@@ -1,0 +1,2 @@
+instalar com: npm install create-react-app
+criar com: npx create-react-app react-alura
