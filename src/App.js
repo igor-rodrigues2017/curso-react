@@ -6,19 +6,49 @@ class App extends Component {
 
 	constructor() {
 		super();
-		this.state = {list: [
-				{
-					name: 'Igor Rodrigues',
-					email: 'igor.chagas.rodrigues@gmail.com',
-					password: '123456'
-				}
-			]};
+		this.state = {list: [], nome: '', email: '', senha: ''};
+		this.submitForm = this.submitForm.bind(this);
+		this.setName = this.setName.bind(this);
+		this.setEmail = this.setEmail.bind(this);
+		this.setPassword = this.setPassword.bind(this);
 	}
 
-	componentWillMount() {
-		fetch('http://cdc-react.herokuapp.com/api/autores')
-			.then(res => res.json()).then(data => this.setState({list: data})
-		);
+	componentDidMount() {
+		fetch('http://localhost:8080/api/autores')
+			.then(res => res.json())
+			.then(data => this.setState({list: data}));
+	}
+
+	submitForm(event) {
+		event.preventDefault();
+		fetch('http://localhost:8080/api/autores', {
+			headers: { 'Content-Type': 'application/json' },
+			method: 'post',
+			body: JSON.stringify({
+				nome: this.state.nome,
+				email: this.state.email,
+				senha: this.state.senha
+			})
+		})
+			.then(res => {
+				if (!res.ok) {
+					console.log(`Status: ${res.status}`)
+				} else {
+					console.log('data sent successfully')
+				}
+			})
+	}
+
+	setName(event) {
+		this.setState({nome: event.target.value});
+	}
+
+	setEmail(event) {
+		this.setState({email: event.target.value});
+	}
+
+	setPassword(event) {
+		this.setState({senha: event.target.value});
 	}
 
 	render() {
@@ -48,18 +78,18 @@ class App extends Component {
 					</div>
 					<div className="content" id="content">
 						<div className="pure-form pure-form-aligned">
-							<form className="pure-form pure-form-aligned">
+							<form className="pure-form pure-form-aligned" onSubmit={this.submitForm} method="post">
 								<div className="pure-control-group">
 									<label htmlFor="nome">Name</label>
-									<input id="nome" type="text" name="nome" value=""  />
+									<input id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setName} />
 								</div>
 								<div className="pure-control-group">
 									<label htmlFor="email">Email</label>
-									<input id="email" type="email" name="email" value=""  />
+									<input id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} />
 								</div>
 								<div className="pure-control-group">
 									<label htmlFor="senha">Password</label>
-									<input id="senha" type="password" name="senha"  />
+									<input id="senha" type="password" name="senha" value={this.state.senha} onChange={this.setPassword} />
 								</div>
 								<div className="pure-control-group">
 									<label></label>
@@ -76,16 +106,18 @@ class App extends Component {
 									<th>email</th>
 								</tr>
 								</thead>
+								<tbody>
 								{
 									this.state.list.map(author => {
 										return(
-											<tr>
-												<td>{author.name}</td>
+											<tr key={author.id}>
+												<td>{author.nome}</td>
 												<td>{author.email}</td>
 											</tr>
 										);
 									})
 								}
+								</tbody>
 							</table>
 						</div>
 					</div>
@@ -93,6 +125,7 @@ class App extends Component {
 			</div>
 		);
 	}
+
 }
 
 export default App;
