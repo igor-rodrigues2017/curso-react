@@ -9,11 +9,13 @@ export default class InputCustom extends Component {
 
 	componentDidMount() {
 		PubSub.subscribe('validate-erros', (topic, data) => {
-			data.errors.forEach(error => {
-				if (error.field == this.props.name) {
-					this.setState({messageError: error.defaultMessage});
-				}
-			});
+			if (data) {
+				data.errors.forEach(error => {
+					if (error.field == this.props.name) {
+						this.setState({messageError: error.defaultMessage});
+					}
+				});
+			}
 		});
 
 		PubSub.subscribe('clear-errors', topic => {
