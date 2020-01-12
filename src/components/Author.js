@@ -59,12 +59,14 @@ class AuthorForm extends Component {
 	}
 
 	render() {
-		return (<form className="pure-form pure-form-aligned" onSubmit={this.submitForm} method="post">
-			<InputCustom label="Name" id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setName}/>
-			<InputCustom label="Email" id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail}/>
-			<InputCustom label="Password" id="password" type="password" name="senha" value={this.state.senha} onChange={this.setPassword}/>
-			<SubmitCustom label="Save" />
-		</form>);
+		return (
+			<form className="pure-form pure-form-aligned" onSubmit={this.submitForm} method="post">
+				<InputCustom label="Name" id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setName}/>
+				<InputCustom label="Email" id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail}/>
+				<InputCustom label="Password" id="password" type="password" name="senha" value={this.state.senha} onChange={this.setPassword}/>
+				<SubmitCustom label="Save" />
+			</form>
+		);
 	}
 }
 
