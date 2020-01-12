@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import './css/pure-min.css';
 import './css/side-menu.css'
-import InputCustom from './components/InputCustom'
-import SubmitCustom from "./components/SubmitCustom";
-import AuthorBox, {AuthorForm, AuthorsTable} from "./components/Author";
+import {Link} from 'react-router-dom';
+import MainRoutes from "./MainRoutes";
 
 class App extends Component {
 
@@ -21,22 +20,15 @@ class App extends Component {
 						<a className="pure-menu-heading" href="#">Company</a>
 
 						<ul className="pure-menu-list">
-							<li className="pure-menu-item"><a href="#" className="pure-menu-link">Home</a></li>
-							<li className="pure-menu-item"><a href="#" className="pure-menu-link">Author</a></li>
-							<li className="pure-menu-item"><a href="#" className="pure-menu-link">Book</a></li>
+							<li className="pure-menu-item"><Link to="/" className="pure-menu-link">Home</Link></li>
+							<li className="pure-menu-item"><Link to="/authors" className="pure-menu-link">Authors</Link></li>
+							<li className="pure-menu-item"><Link to="/books" className="pure-menu-link">Books</Link></li>
 						</ul>
 					</div>
 				</div>
 
 				<div id="main">
-					<div className="header">
-						<h1>Cadastro de Autores</h1>
-					</div>
-					<div className="content" id="content">
-						<div className="pure-form pure-form-aligned">
-							<AuthorBox />
-						</div>
-					</div>
+					<MainRoutes />
 				</div>
 			</div>
 		);
