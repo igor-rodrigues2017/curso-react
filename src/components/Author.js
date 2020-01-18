@@ -9,9 +9,6 @@ class AuthorForm extends Component {
 		super();
 		this.state = {nome: '', email: '', senha: ''};
 		this.submitForm = this.submitForm.bind(this);
-		this.setName = this.setName.bind(this);
-		this.setEmail = this.setEmail.bind(this);
-		this.setPassword = this.setPassword.bind(this);
 	}
 
 	submitForm(event) {
@@ -46,24 +43,18 @@ class AuthorForm extends Component {
 		this.setState({nome: '', email: '', senha: ''});
 	}
 
-	setName(event) {
-		this.setState({nome: event.target.value});
-	}
-
-	setEmail(event) {
-		this.setState({email: event.target.value});
-	}
-
-	setPassword(event) {
-		this.setState({senha: event.target.value});
+	setField(inputName, event) {
+		let field = {};
+		field[inputName] = event.target.value;
+		this.setState(field);
 	}
 
 	render() {
 		return (
 			<form className="pure-form pure-form-aligned" onSubmit={this.submitForm} method="post">
-				<InputCustom label="Name" id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setName}/>
-				<InputCustom label="Email" id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail}/>
-				<InputCustom label="Password" id="password" type="password" name="senha" value={this.state.senha} onChange={this.setPassword}/>
+				<InputCustom label="Name" id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setField.bind(this, 'nome')}/>
+				<InputCustom label="Email" id="email" type="email" name="email" value={this.state.email} onChange={this.setField.bind(this, 'email')}/>
+				<InputCustom label="Password" id="password" type="password" name="senha" value={this.state.senha} onChange={this.setField.bind(this, 'senha')}/>
 				<SubmitCustom label="Save" />
 			</form>
 		);

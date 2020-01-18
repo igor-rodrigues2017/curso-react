@@ -8,30 +8,14 @@ class BookForm extends Component {
 
 	constructor() {
 		super();
-		this.state = {titulo:'', preco: '', authors: [], autor:'', autorId:''};
-		this.setTitle = this.setTitle.bind(this);
-		this.setPrice = this.setPrice.bind(this);
-		this.setAuthorId = this.setAuthorId.bind(this);
+		this.state = {titulo:'', preco: '', autorId:''};
 		this.submitForm = this.submitForm.bind(this);
 	}
 
-	componentDidMount() {
-		fetch('http://localhost:8080/api/autores')
-			.then(res => res.json())
-			.then(data => this.setState({authors: data}));
-	}
-
-	setTitle(event) {
-		this.setState({titulo: event.target.value});
-	}
-
-	setPrice(event) {
-		this.setState({preco: event.target.value});
-	}
-
-	setAuthorId(event) {
-		this.setState({autorId: event.target.value});
-		console.log(this.state.autorId);
+	setField(inputName, event) {
+		let field = {};
+		field[inputName] = event.target.value;
+		this.setState(field);
 	}
 
 	submitForm(event) {
@@ -63,15 +47,15 @@ class BookForm extends Component {
 	}
 
 	clearBookForm() {
-		this.setState({titulo: '', preco: '', autor:'', autorId: ''});
+		this.setState({titulo: '', preco: '', autorId: ''});
 	}
 
 	render() {
 		return (
 			<form className="pure-form pure-form-aligned" onSubmit={this.submitForm} method="post">
-				<InputCustom label="Title" id="title" type="text" name="titulo" value={this.state.titulo} onChange={this.setTitle}/>
-				<InputCustom label="Value" id="preco" type="text" name="preco" value={this.state.preco} onChange={this.setPrice}/>
-				<SelectAuthors authors={this.state.authors} id='authorId' name="autorId" value={this.state.autorId} onChange={this.setAuthorId} />
+				<InputCustom label="Title" id="title" type="text" name="titulo" value={this.state.titulo} onChange={this.setField.bind(this, 'titulo')}/>
+				<InputCustom label="Value" id="preco" type="text" name="preco" value={this.state.preco} onChange={this.setField.bind(this, 'preco')}/>
+				<SelectAuthors authors={this.props.authors} id='authorId' name="autorId" value={this.state.autorId} onChange={this.setField.bind(this, 'autorId')} />
 				<SubmitCustom label="Save" />
 			</form>
 		);
@@ -110,13 +94,17 @@ class BooksTable extends Component {
 export default class BookBox extends Component {
 	constructor() {
 		super();
-		this.state = {books: []};
+		this.state = {books: [], authors: []};
 	}
 
 	componentDidMount() {
 		fetch('http://localhost:8080/api/livros')
 			.then(res => res.json())
 			.then(data => this.updateList(data));
+
+		fetch('http://localhost:8080/api/autores')
+			.then(res => res.json())
+			.then(data => this.setState({authors: data}));
 
 		PubSub.subscribe('update-list-books', (topic, newList) => {
 			this.updateList(newList);
@@ -134,7 +122,7 @@ export default class BookBox extends Component {
 					<h1>Books Register</h1>
 				</div>
 				<div className="content" id="content">
-					<BookForm />
+					<BookForm authors={this.state.authors}/>
 					<BooksTable books={this.state.books} />
 				</div>
 			</div>
